@@ -8,8 +8,10 @@
 import UIKit
 import SnapKit
 
+//  MARK: GoodsViewControllerDelegate
+
 protocol GoodsViewControllerDelegate {
-    func openCart(_ controller: GoodsViewController)
+    func openCart(_ goods: [Good])
 }
 
 class GoodsViewController: BaseViewController {
@@ -42,7 +44,7 @@ class GoodsViewController: BaseViewController {
         button.setImage(#imageLiteral(resourceName: "Cart").withTintColor(.white), for: .normal)
         button.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.5568627451, blue: 0.2352941176, alpha: 1)
         button.layer.cornerRadius = 25
-        button.addTarget(self, action: #selector(openCart), for: .touchUpInside)
+        button.addTarget(self, action: #selector(openCart(_:)), for: .touchUpInside)
         return button
     }()
     
@@ -70,6 +72,8 @@ class GoodsViewController: BaseViewController {
         return table
     }()
     
+//    MARK: Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Товары"
@@ -96,27 +100,29 @@ class GoodsViewController: BaseViewController {
             yOffset: 2)
     }
     
+//    MARK: Private Methods
+    
     private func setup() {
         view.addSubview(tableView)
-        tableView.snp.makeConstraints { m in
-            m.edges.equalToSuperview()
+        tableView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
         
         view.addSubview(cartButton)
-        cartButton.snp.makeConstraints { m in
-            m.trailing.equalToSuperview().offset(-20)
-            m.bottom.equalToSuperview().offset(-30)
+        cartButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-20)
+            make.bottom.equalToSuperview().offset(-30)
         }
         
         view.addSubview(cartItemsView)
-        cartItemsView.snp.makeConstraints { m in
-            m.top.equalTo(cartButton.snp.bottom).offset(-12)
-            m.leading.equalTo(cartButton.snp.trailing).offset(-20)
+        cartItemsView.snp.makeConstraints { make in
+            make.top.equalTo(cartButton.snp.bottom).offset(-12)
+            make.leading.equalTo(cartButton.snp.trailing).offset(-20)
         }
         
         cartItemsView.addSubview(cartItemsLabel)
-        cartItemsLabel.snp.makeConstraints { m in
-            m.edges.equalToSuperview().inset(UIEdgeInsets(top: 2, left: 4, bottom: 2, right: 4))
+        cartItemsLabel.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(UIEdgeInsets(top: 2, left: 4, bottom: 2, right: 4))
         }
     }
     
@@ -125,16 +131,17 @@ class GoodsViewController: BaseViewController {
     }
     
     private func bindViewModel() {
-        
         viewModel.onLoadImage = { [weak self] index in
             self?.tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .fade)
         }
     }
     
-    @objc private func openCart(sender: UIButton!) {
-        delegate?.openCart(self)
+    @objc private func openCart(_ sender: UIButton!) {
+        self.delegate?.openCart(self.viewModel.goodsToBuy)
     }
 }
+
+// MARK: UITableViewDataSource
 
 extension GoodsViewController: UITableViewDataSource {
     
@@ -147,12 +154,14 @@ extension GoodsViewController: UITableViewDataSource {
         let good = viewModel.goods[indexPath.row]
         cell.set(good)
         cell.contentView.isUserInteractionEnabled = false
-        cell.onAddButtonClick = {
+        cell.onAddButtonClick = { [weak self] in
+            guard let self = self else { return }
             self.orderItemsCount += 1
             good.count += 1
             self.viewModel.commitChanges()
         }
-        cell.onRemoveButtonClick = {
+        cell.onRemoveButtonClick = { [weak self] in
+            guard let self = self else { return }
             self.orderItemsCount -= 1
             good.count -= 1
             self.viewModel.commitChanges()
@@ -162,17 +171,12 @@ extension GoodsViewController: UITableViewDataSource {
     
 }
 
+// MARK: UITableViewDelegate
+
 extension GoodsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
-    }
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return nil
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 0
     }
     
     func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {

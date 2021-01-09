@@ -41,32 +41,32 @@ class GoodCell: UITableViewCell, CellInstantiable {
 //    MARK: UIElements
     
     private lazy var shadowView: UIView = {
-        let v = UIView()
-        v.backgroundColor = .white//#colorLiteral(red: 0.1058823529, green: 0.368627451, blue: 0.1254901961, alpha: 1)
-        v.layer.cornerRadius = 6
-        return v
+        let view = UIView()
+        view.backgroundColor = .white
+        view.layer.cornerRadius = 6
+        return view
     }()
     
     private lazy var goodImageView: UIImageView = {
-        let i = UIImageView()
-        i.layer.cornerRadius = 6
-        i.layer.masksToBounds = true
-        return i
+        let imageView = UIImageView()
+        imageView.layer.cornerRadius = 6
+        imageView.layer.masksToBounds = true
+        return imageView
     }()
     
     private lazy var goodTitleLabel: UILabel = {
-        let l = UILabel()
-        l.font = UIFont.systemFont(ofSize: 14)
-        l.textColor = .black
-        l.numberOfLines = 3
-        return l
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = .black
+        label.numberOfLines = 3
+        return label
     }()
     
     private lazy var goodPriceLabel: UILabel = {
-        let l = UILabel()
-        l.font = UIFont.boldSystemFont(ofSize: 14)
-        l.textColor = .black
-        return l
+        let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 14)
+        label.textColor = .black
+        return label
     }()
     
     private lazy var cartButton: UIButton = {
@@ -115,10 +115,7 @@ class GoodCell: UITableViewCell, CellInstantiable {
     
     private lazy var deleteButton: UIButton = {
         let button = UIButton()
-//        button.contentEdgeInsets = UIEdgeInsets(top: 5, left: 12, bottom: 5, right: 12)
         button.setImage(#imageLiteral(resourceName: "trash").withTintColor(.red), for: .normal)
-//        button.backgroundColor = #colorLiteral(red: 0.2196078431, green: 0.5568627451, blue: 0.2352941176, alpha: 1)
-//        button.layer.cornerRadius = 6
         button.addTarget(self, action: #selector(deleteFromCart), for: .touchUpInside)
         button.isHidden = true
         button.setContentHuggingPriority(.required, for: .horizontal)
@@ -154,63 +151,63 @@ class GoodCell: UITableViewCell, CellInstantiable {
     private func setup() {
         
         addSubview(shadowView)
-        shadowView.snp.makeConstraints { (m) in
-            m.edges.equalToSuperview().inset(UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
+        shadowView.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
         }
         
         shadowView.addSubview(goodImageView)
-        goodImageView.snp.makeConstraints { m in
-            m.width.height.equalTo(125)
-            m.top.leading.equalToSuperview().offset(10)
-            m.bottom.equalToSuperview().offset(-10)
+        goodImageView.snp.makeConstraints { make in
+            make.width.height.equalTo(125)
+            make.top.leading.equalToSuperview().offset(10)
+            make.bottom.equalToSuperview().offset(-10)
         }
         
         shadowView.addSubview(goodPriceLabel)
-        goodPriceLabel.snp.makeConstraints { m in
-            m.top.equalTo(goodImageView)
-            m.leading.equalTo(goodImageView.snp.trailing).offset(10)
+        goodPriceLabel.snp.makeConstraints { make in
+            make.top.equalTo(goodImageView)
+            make.leading.equalTo(goodImageView.snp.trailing).offset(10)
         }
         
         shadowView.addSubview(goodTitleLabel)
-        goodTitleLabel.snp.makeConstraints { m in
-            m.top.equalTo(goodPriceLabel.snp.bottom).offset(5)
-            m.leading.equalTo(goodImageView.snp.trailing).offset(10)
-            m.trailing.equalToSuperview().offset(-10)
+        goodTitleLabel.snp.makeConstraints { make in
+            make.top.equalTo(goodPriceLabel.snp.bottom).offset(5)
+            make.leading.equalTo(goodImageView.snp.trailing).offset(10)
+            make.trailing.equalToSuperview().offset(-10)
         }
         
         shadowView.addSubview(cartButton)
-        cartButton.snp.makeConstraints { m in
-            m.top.greaterThanOrEqualTo(goodTitleLabel.snp.bottom).offset(10)
-            m.leading.equalTo(goodImageView.snp.trailing).offset(10)
-            m.bottom.equalToSuperview().offset(-10)
+        cartButton.snp.makeConstraints { make in
+            make.top.greaterThanOrEqualTo(goodTitleLabel.snp.bottom).offset(10)
+            make.leading.equalTo(goodImageView.snp.trailing).offset(10)
+            make.bottom.equalToSuperview().offset(-10)
         }
         
         shadowView.addSubview(removeButton)
-        removeButton.snp.makeConstraints { m in
-            m.top.greaterThanOrEqualTo(goodTitleLabel.snp.bottom).offset(10)
-            m.leading.equalTo(goodImageView.snp.trailing).offset(10)
-            m.bottom.equalToSuperview().offset(-10)
+        removeButton.snp.makeConstraints { make in
+            make.top.greaterThanOrEqualTo(goodTitleLabel.snp.bottom).offset(10)
+            make.leading.equalTo(goodImageView.snp.trailing).offset(10)
+            make.bottom.equalToSuperview().offset(-10)
         }
         
         shadowView.addSubview(countLabel)
-        countLabel.snp.makeConstraints { m in
-            m.centerY.equalTo(removeButton)
-            m.leading.equalTo(removeButton.snp.trailing).offset(5)
+        countLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(removeButton)
+            make.leading.equalTo(removeButton.snp.trailing).offset(5)
         }
         
         shadowView.addSubview(addButton)
-        addButton.snp.makeConstraints { m in
-            m.centerY.equalTo(removeButton)
-            m.leading.equalTo(countLabel.snp.trailing).offset(5)
+        addButton.snp.makeConstraints { make in
+            make.centerY.equalTo(removeButton)
+            make.leading.equalTo(countLabel.snp.trailing).offset(5)
         }
         
         shadowView.addSubview(deleteButton)
-        deleteButton.snp.makeConstraints { m in
-            m.centerY.equalTo(removeButton)
-            m.trailing.equalToSuperview().offset(-10)
-            m.leading.greaterThanOrEqualTo(addButton.snp.trailing).offset(10)
-            m.height.equalTo(removeButton).multipliedBy(0.7)
-            m.width.equalTo(deleteButton.snp.height).multipliedBy(0.9)
+        deleteButton.snp.makeConstraints { make in
+            make.centerY.equalTo(removeButton)
+            make.trailing.equalToSuperview().offset(-10)
+            make.leading.greaterThanOrEqualTo(addButton.snp.trailing).offset(10)
+            make.height.equalTo(removeButton).multipliedBy(0.7)
+            make.width.equalTo(deleteButton.snp.height).multipliedBy(0.9)
         }
     }
     

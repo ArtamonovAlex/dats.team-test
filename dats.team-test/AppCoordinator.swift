@@ -13,7 +13,6 @@ class AppCoordinator {
     public var window: UIWindow!
     
     private var navigationController: UINavigationController!
-
     
 //    MARK: Init
     
@@ -26,11 +25,13 @@ class AppCoordinator {
         showGoods()
     }
     
-    private func showGoods() {
+//    MARK: Private Methods
+    
+    func showGoods() {
         let vc = GoodsViewController()
         vc.viewModel = GoodsViewModel()
         vc.delegate = self
-        navigationController.setViewControllers([vc], animated: false)
+        navigationController.pushViewController(vc, animated: false)
     }
     
     private func showCart(goods: [Good]) {
@@ -41,9 +42,7 @@ class AppCoordinator {
 }
 
 extension AppCoordinator: GoodsViewControllerDelegate {
-    func openCart(_ controller: GoodsViewController) {
-        showCart(goods: controller.viewModel.goods.filter {$0.count > 0})
+    func openCart(_ goods: [Good]) {
+        showCart(goods: goods)
     }
-    
-    
 }

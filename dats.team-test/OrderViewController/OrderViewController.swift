@@ -33,18 +33,18 @@ class OrderViewController: BaseViewController {
     }()
     
     private lazy var totalLabel: UILabel = {
-        let l = UILabel()
-        l.font = UIFont.systemFont(ofSize: 14)
-        l.textColor = #colorLiteral(red: 0.9333333333, green: 0.9333333333, blue: 0.9333333333, alpha: 1)
-        l.text = "Итого"
-        return l
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = #colorLiteral(red: 0.9333333333, green: 0.9333333333, blue: 0.9333333333, alpha: 1)
+        label.text = "Итого"
+        return label
     }()
     
     private lazy var totalPriceLabel: UILabel = {
-        let l = UILabel()
-        l.font = UIFont.boldSystemFont(ofSize: 14)
-        l.textColor = #colorLiteral(red: 0.9333333333, green: 0.9333333333, blue: 0.9333333333, alpha: 1)
-        return l
+        let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 14)
+        label.textColor = #colorLiteral(red: 0.9333333333, green: 0.9333333333, blue: 0.9333333333, alpha: 1)
+        return label
     }()
     
     private lazy var orderButton: UIButton = {
@@ -58,6 +58,9 @@ class OrderViewController: BaseViewController {
         button.addTarget(self, action: #selector(createOrder), for: .touchUpInside)
         return button
     }()
+    
+//    MARK: Lifecycle
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,37 +83,39 @@ class OrderViewController: BaseViewController {
             yOffset: 2)
     }
     
+//    MARK: Private Methods
+    
     private func setup() {
         view.addSubview(tableView)
-        tableView.snp.makeConstraints { m in
-            m.top.leading.trailing.equalToSuperview()
+        tableView.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview()
         }
         
         view.addSubview(shadowView)
-        shadowView.snp.makeConstraints { m in
-            m.top.equalTo(tableView.snp.bottom)
-            m.leading.trailing.equalToSuperview()
-            m.bottom.equalToSuperview().offset(5)
+        shadowView.snp.makeConstraints { make in
+            make.top.equalTo(tableView.snp.bottom)
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalToSuperview().offset(5)
         }
         
         shadowView.addSubview(totalPriceLabel)
-        totalPriceLabel.snp.makeConstraints { m in
-            m.top.equalToSuperview().offset(10)
-            m.trailing.equalToSuperview().offset(-20)
+        totalPriceLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(10)
+            make.trailing.equalToSuperview().offset(-20)
         }
         
         shadowView.addSubview(totalLabel)
-        totalLabel.snp.makeConstraints { m in
-            m.centerY.equalTo(totalPriceLabel)
-            m.leading.equalToSuperview().offset(20)
+        totalLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(totalPriceLabel)
+            make.leading.equalToSuperview().offset(20)
         }
         
         shadowView.addSubview(orderButton)
-        orderButton.snp.makeConstraints { m in
-            m.top.equalTo(totalPriceLabel.snp.bottom).offset(10)
-            m.leading.equalToSuperview().offset(30)
-            m.trailing.equalToSuperview().offset(-30)
-            m.bottom.equalToSuperview().offset(-20)
+        orderButton.snp.makeConstraints { make in
+            make.top.equalTo(totalPriceLabel.snp.bottom).offset(10)
+            make.leading.equalToSuperview().offset(30)
+            make.trailing.equalToSuperview().offset(-30)
+            make.bottom.equalToSuperview().offset(-20)
         }
     }
     
@@ -124,6 +129,8 @@ class OrderViewController: BaseViewController {
     }
 }
 
+// MARK: UITableViewDataSource
+
 extension OrderViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -135,12 +142,14 @@ extension OrderViewController: UITableViewDataSource {
         let good = viewModel.goods[indexPath.row]
         cell.set(good, needShowDeleteButton: true)
         cell.contentView.isUserInteractionEnabled = false
-        cell.onAddButtonClick = {
+        cell.onAddButtonClick = { [weak self] in
+            guard let self = self else { return }
             good.count += 1
             self.totalPriceLabel.text = "\(self.viewModel.totalPrice) Р"
             self.viewModel.commitChanges()
         }
-        cell.onRemoveButtonClick = {
+        cell.onRemoveButtonClick = { [weak self] in
+            guard let self = self else { return }
             good.count -= 1
             if good.count == 0 {
                 self.viewModel.removeGood(with: good.id)
@@ -153,7 +162,8 @@ extension OrderViewController: UITableViewDataSource {
             }
             self.viewModel.commitChanges()
         }
-        cell.onDeleteButtonClick = {
+        cell.onDeleteButtonClick = { [weak self] in
+            guard let self = self else { return }
             good.count = 0
             self.viewModel.removeGood(with: good.id)
             self.tableView.reloadData()
@@ -169,17 +179,12 @@ extension OrderViewController: UITableViewDataSource {
     
 }
 
+// MARK: UITableViewDelegate
+
 extension OrderViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
-    }
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return nil
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 0
     }
     
     func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {

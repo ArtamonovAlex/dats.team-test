@@ -9,19 +9,25 @@ import UIKit
 
 class OrderViewModel {
     
-    //    MARK: Private Properties
+//    MARK: Private Properties
     
     private(set) var goods: [Good]
     
     private let userDefaults = UserDefaults.standard
     
+//    MARK: Private Properties
+    
     public var totalPrice: Int {
         return goods.reduce(0) {$0 + $1.count * $1.price}
     }
     
+//    MARK: Init
+    
     init(_ goods: [Good]) {
         self.goods = goods
     }
+    
+//    MARK: Actions
     
     public func removeGood(with id: Int) {
         goods.removeAll { $0.id == id }

@@ -14,8 +14,6 @@ class GoodsViewModel {
     
 //    MARK: Public Properties
     
-    public var isUpdating: ((Bool) -> ())?
-    public var onError: ((String) -> ())?
     public var onLoadImage: ((Int) -> ())?
     
     public var itemsCount: Int {
@@ -44,8 +42,6 @@ class GoodsViewModel {
     }
     
     public func reloadData() {
-        isUpdating?(true)
-        
         let resp: GoodsResponse = loadFromFile("Goods.json")
         goods = resp.goods
         let previousGoodsToBuy = loadFromUserDefaults()
@@ -59,8 +55,9 @@ class GoodsViewModel {
                 self?.onLoadImage?(index)
             }
         }
-        isUpdating?(false)
     }
+    
+//    MARK: Private Methods
     
     private func loadFromUserDefaults() -> [Good] {
         guard let goodsEncoded = userDefaults.value(forKey: UserDefaultsKeys.goods.rawValue) as? Data else { return [] }
