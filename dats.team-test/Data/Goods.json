@@ -1,0 +1,46 @@
+{
+    "goods":[
+        {
+            "id": 0,
+            "title": "Футбольный мяч Adidas",
+            "price": 4300,
+            "imageLink": "https://cdn1.ozone.ru/s3/multimedia-3/wc1200/6012441027.jpg"
+        },
+        {
+            "id": 1,
+            "title": "Бутсы Adidas X 17.3 FG",
+            "price": 12790,
+            "imageLink": "https://cdn1.ozone.ru/s3/multimedia-d/wc1200/6023704357.jpg"
+        },
+        {
+            "id": 2,
+            "title": "Олимпийка Adidas Originals",
+            "price": 2934,
+            "imageLink": "https://cdn1.ozone.ru/s3/multimedia-y/wc1200/6017374138.jpg"
+        },
+        {
+            "id": 3,
+            "title": "Костюм спортивный Adidas MTS B2BAS 3S C",
+            "price": 5390,
+            "imageLink": "https://cdn1.ozone.ru/s3/multimedia-a/wc1200/6017330662.jpg"
+        },
+        {
+            "id": 4,
+            "title": "Брюки спортивные Adidas Originals",
+            "price": 5999,
+            "imageLink": "https://cdn1.ozone.ru/s3/multimedia-e/wc1200/6017299166.jpg"
+        },
+        {
+            "id": 5,
+            "title": "Бейсболка Adidas",
+            "price": 1836,
+            "imageLink": "https://cdn1.ozone.ru/s3/multimedia-2/wc1200/6008777234.jpg"
+        },
+        {
+            "id": 6,
+            "title": "Футболка Adidas",
+            "price": 1999,
+            "imageLink": "https://cdn1.ozone.ru/s3/multimedia-a/wc1200/6017320114.jpg"
+        }
+    ]
+}
